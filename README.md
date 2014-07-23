@@ -39,17 +39,17 @@ $options = array(
             'default'
         )
     ),
-    'resultsFormat'   => "parser1({domain}:{key}:{position}\n)",
+    'resultsFormat'   => "$p1.domain:$p1.key:$p1.position\n)",
 
 /*  #Default values
-    'resultsFileName' => '{date}-{time}.txt',
+    'resultsFileName' => '$datefile.format().txt',
     'uniqueQueries'   => 0,
     'keepUnique'      => 0,
     'resultsPrepend'  => '',
     'moreOptions'     => 0,
     'resultsUnique'   => 'no',
     'doLog'           => 'no',
-    'queryFormat'     => '{query}',
+    'queryFormat'     => '$query',
     'resultsSaveTo'   => 'file',
     'configOverrides' => array(),
     'resultsAppend'   => '',
