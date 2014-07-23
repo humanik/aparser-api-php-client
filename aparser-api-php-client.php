@@ -9,7 +9,7 @@
  * @url http://a-parser.com/wiki/user-api/
  *
  * @author Pavel Zima <ice2038@mail.ru>
- * @version 0.1
+ * @version 0.2
  */
 class Aparser
 {
@@ -274,7 +274,7 @@ class Aparser
         if($taskPreset) {
             $data['preset'] = $taskPreset;
         } else {
-            $data['resultsFileName'] = isset($options['resultsFileName']) ? $options['resultsFileName'] : '{date}-{time}.txt';
+            $data['resultsFileName'] = isset($options['resultsFileName']) ? $options['resultsFileName'] : '$datefile.format().txt';
             $data['parsers']         = isset($options['parsers'])         ? $options['parsers']         : array();
             $data['uniqueQueries']   = isset($options['uniqueQueries'])   ? $options['uniqueQueries']   : 0;
             $data['keepUnique']      = isset($options['keepUnique'])      ? $options['keepUnique']      : 0;
@@ -282,7 +282,7 @@ class Aparser
             $data['moreOptions']     = isset($options['moreOptions'])     ? $options['moreOptions']     : '';
             $data['resultsUnique']   = isset($options['resultsUnique'])   ? $options['resultsUnique']   : 'no';
             $data['doLog']           = isset($options['doLog'])           ? $options['doLog']           : 'no';
-            $data['queryFormat']     = isset($options['queryFormat'])     ? $options['queryFormat']     : '{query}';
+            $data['queryFormat']     = isset($options['queryFormat'])     ? $options['queryFormat']     : '$query';
             $data['resultsSaveTo']   = isset($options['resultsSaveTo'])   ? $options['resultsSaveTo']   : 'file';
             $data['configOverrides'] = isset($options['configOverrides']) ? $options['configOverrides'] : array();
             $data['resultsFormat']   = isset($options['resultsFormat'])   ? $options['resultsFormat']   : '';
