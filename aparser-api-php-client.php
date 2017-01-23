@@ -350,6 +350,39 @@ class Aparser
     {
         return $this->makeRequest(__FUNCTION__, array('taskUid' => $taskUid, 'direction' => $direction));
     }
+    
+        /**
+     * Getting the link to Task results file by Task Uid
+     *
+     * @param int $taskUid
+     * @return array
+     */
+    public function getTaskResultsFile($taskUid)
+    {
+        return $this->makeRequest(__FUNCTION__, array('taskUid' => $taskUid));
+    }
+
+    /**
+     * Removing results file by Task Uid
+     *
+     * @param $taskUid
+     * @return mixed
+     */
+    public function deleteTaskResultsFile($taskUid)
+    {
+        return $this->makeRequest(__FUNCTION__, array('taskUid' => $taskUid));
+    }
+
+    /**
+     * Getting the list of tasks
+     *
+     * @param $completed
+     * @return mixed
+     */
+    public function getTasksList($completed = 0)
+    {
+        return $this->makeRequest(__FUNCTION__, array('completed' => $completed));
+    }
 
     /**
      * @param string $action
