@@ -16,17 +16,17 @@ require_once 'aparser-api-php-client.php';
 
 $aparser = new Aparser('http://127.0.0.1:9091/API', 'pass', array('debug'=>'true'));
 
+//List of supported requests
 $aparser->ping();
 $aparser->info();
-$aparser->getProxies();
 $aparser->oneRequest('compact keyboard', 'SE::Google', 'default');
 $aparser->bulkRequest(
     array('compact keyboard','usb compact keyboard'),
     'SE::Google'
 );
 $aparser->getParserPreset('SE::Google', 'default');
-$aparser->getTaskState(1);
-$aparser->changeTaskStatus(1,'deleting');
+$aparser->getProxies();
+$aparser->setProxyCheckerPreset();
 
 # 1 way
 $aparser->addTask('default', 'default', 'text', array('keyboard','usb keyboard'));
@@ -59,7 +59,10 @@ $options = array(
 );
 $taskUid = $aparser->addTask('default', FALSE, 'text', array('msn.com microsoft'), $options);
 
+$aparser->getTaskState($taskUid);
 $aparser->getTaskConf($taskUid);
+$aparser->changeTaskStatus($taskUid,'deleting');
+
 
 ```
 

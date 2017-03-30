@@ -9,7 +9,7 @@
  * @url http://a-parser.com/wiki/user-api/
  *
  * @author Pavel Zima <ice2038@mail.ru>
- * @version 0.2
+ * @version 0.3
  */
 class Aparser
 {
@@ -180,6 +180,17 @@ class Aparser
     {
         return $this->makeRequest(__FUNCTION__);
     }
+	
+	/**
+	 * Installation of the current preset of proxy checker
+	 * 
+	 * @param string $preset
+	 * @return array
+	 */
+	public function setProxyCheckerPreset($preset = 'default')
+	{
+		return $this->makeRequest(__FUNCTION__, array('preset' => $preset));
+	}
 
     /**
      * Single request parsing, you can use any parser and preset. This
@@ -351,7 +362,7 @@ class Aparser
         return $this->makeRequest(__FUNCTION__, array('taskUid' => $taskUid, 'direction' => $direction));
     }
     
-        /**
+    /**
      * Getting the link to Task results file by Task Uid
      *
      * @param int $taskUid
@@ -384,6 +395,38 @@ class Aparser
         return $this->makeRequest(__FUNCTION__, array('completed' => $completed));
     }
 
+	/**
+     * Displays a list of all available results that can return the specified parser.
+     *
+     * @param string $parser
+     * @return array
+     */
+    public function getParserInfo($parser)
+    {
+        return $this->makeRequest(__FUNCTION__, array('parser' => $parser));
+    }
+	
+	/**
+     * Update executable file of the parser to the latest version, after sending the command.
+     *
+     * @return mixed
+     */
+    public function update()
+    {
+        return $this->makeRequest(__FUNCTION__);
+    }
+	
+	
+	/**
+     * Getting the number of active accounts (for Yandex).
+     *
+     * @return mixed
+     */
+    public function getAccountsCount()
+    {
+        return $this->makeRequest(__FUNCTION__);
+    }
+	
     /**
      * @param string $action
      * @param array $data
