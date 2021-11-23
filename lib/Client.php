@@ -52,7 +52,7 @@ class Client
      * @param string $query
      * @param string $parser
      * @param string $preset
-     * @param int    $rawResults
+     * @param bool $rawResults
      * @param array  $options
      *
      * @return array
@@ -80,12 +80,12 @@ class Client
      * Bulk parsing request, any parser and preset can be used
      * @url https://a-parser.com/docs/api/methods#bulkrequest
      *
-     * @param array  $queries
+     * @param array $queries
      * @param string $parser
      * @param string $preset
-     * @param int    $threads
-     * @param bool    $rawResults
-     * @param array  $options
+     * @param int $threads
+     * @param bool $rawResults
+     * @param array $options
      *
      * @return array
      */
@@ -117,8 +117,8 @@ class Client
      * @param string $configPreset
      * @param string $taskPreset
      * @param string $queriesFrom  file|text
-     * @param array  $queries
-     * @param array  $options
+     * @param array $queries
+     * @param array $options
      *
      * @return int
      *
@@ -350,7 +350,7 @@ class Client
 
     /**
      * @param string $action
-     * @param array  $data
+     * @param array $data
      *
      * @return array|string|bool
      */
