@@ -1,0 +1,11 @@
+{
+	"name": "humanik/aparser-client",
+	"autoload": {
+		"psr-4": {
+			"Humanik\\Aparser": "lib"
+		}
+	},
+	"require-dev": {
+		"squizlabs/php_codesniffer": "^3.6"
+	}
+}
