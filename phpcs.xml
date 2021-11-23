@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Custom" namespace="Humanik" xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd">
+
+    <description>Custom Coding Standards</description>
+
+    <file>src</file>
+    <exclude-pattern>vendor</exclude-pattern>
+
+    <rule ref="PSR12"/>
+
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found">
+        <type>warning</type>
+    </rule>
+</ruleset>
