@@ -10,8 +10,8 @@ use InvalidArgumentException;
  *
  * This client assists in making calls to A-Parser API.
  *
- * @url https://github.com/ice2038/aparser-api-php-client
- * @url http://a-parser.com/wiki/user-api/
+ * @url https://github.com/humanik/aparser-api-php-client
+ * @url https://a-parser.com/docs/api/methods
  *
  * @version 1.0.0
  */
@@ -35,56 +35,27 @@ class Client
     }
 
     /**
-     * The ping method, the server should respond by invoking "pong" on
-     * the callback data
+     * The ping method, the server should respond by invoking "pong" on the callback data
+     * @url https://a-parser.com/docs/api/methods#ping
      *
      * @return string
      */
-    public function ping()
+    public function ping(): string
     {
         return $this->makeRequest(__FUNCTION__);
     }
 
     /**
-     * Return total information (pid, version, tasks in queue);
+     * Single parsing request, any parser and preset can be used
+     * @url https://a-parser.com/docs/api/methods#onerequest
      *
-     * @return array
-     */
-    public function info()
-    {
-        return $this->makeRequest(__FUNCTION__);
-    }
-
-    /**
-     * Getting a list of live proxies
-     *
-     * @return array
-     */
-    public function getProxies()
-    {
-        return $this->makeRequest(__FUNCTION__);
-    }
-
-    /**
-     * Installation of the current preset of proxy checker
-     *
-     * @param string $preset
-     *
-     * @return array
-     */
-    public function setProxyCheckerPreset($preset = 'default')
-    {
-        return $this->makeRequest(__FUNCTION__, ['preset' => $preset]);
-    }
-
-    /**
      * @param string $query
      * @param string $parser
      * @param string $preset
      * @param int    $rawResults
      * @param array  $options
      *
-     * @return mixed
+     * @return array
      */
     public function oneRequest(
         string $query,
@@ -106,6 +77,9 @@ class Client
     }
 
     /**
+     * Bulk parsing request, any parser and preset can be used
+     * @url https://a-parser.com/docs/api/methods#bulkrequest
+     *
      * @param array  $queries
      * @param string $parser
      * @param string $preset
@@ -137,27 +111,8 @@ class Client
     }
 
     /**
-     * Getting of the parser settings and presets
-     *
-     * @param $parser
-     * @param string $preset
-     *
-     * @return array
-     */
-    public function getParserPreset(string $parser, string $preset = 'default')
-    {
-        return $this->makeRequest(
-            __FUNCTION__,
-            [
-                'parser' => $parser,
-                'preset' => $preset,
-            ]
-        );
-    }
-
-    /**
-     * Add a task to turn all options are similar to those that are
-     * specified in the interface Add Task
+     * Add a task to turn all options are similar to those that are specified in the interface Add Task
+     * @url https://a-parser.com/docs/api/methods#addtask
      *
      * @param string $configPreset
      * @param string $taskPreset
@@ -165,11 +120,11 @@ class Client
      * @param array  $queries
      * @param array  $options
      *
-     * @return string taskUid
+     * @return int
      *
      * @throws InvalidArgumentException
      */
-    public function addTask($configPreset, $taskPreset, $queriesFrom, $queries, $options = [])
+    public function addTask($configPreset, $taskPreset, $queriesFrom, $queries, $options = []): int
     {
         $data['configPreset'] = $configPreset ? $configPreset : 'default';
 
@@ -206,95 +161,106 @@ class Client
                 throw new InvalidArgumentException('Argument $queriesFrom is incorrect!');
         }
 
-        return $this->makeRequest(__FUNCTION__, $data);
+        return (int) $this->makeRequest(__FUNCTION__, $data);
+    }
+
+    /**
+     * Return total information (pid, version, tasks in queue);
+     * @url https://a-parser.com/docs/api/methods#info
+     *
+     * @return array
+     */
+    public function info(): array
+    {
+        return $this->makeRequest(__FUNCTION__);
+    }
+
+    /**
+     * Getting of the parser settings and presets
+     * @url https://a-parser.com/docs/api/methods#getparserpreset
+     *
+     * @param $parser
+     * @param string $preset
+     *
+     * @return array
+     */
+    public function getParserPreset(string $parser, string $preset = 'default'): array
+    {
+        return $this->makeRequest(
+            __FUNCTION__,
+            [
+                'parser' => $parser,
+                'preset' => $preset,
+            ]
+        );
+    }
+
+    /**
+     * Getting a list of live proxies
+     * @url https://a-parser.com/docs/api/methods#getproxies
+     *
+     * @return array
+     */
+    public function getProxies(): array
+    {
+        return $this->makeRequest(__FUNCTION__);
     }
 
     /**
      * Getting the status of task by uid
+     * @url https://a-parser.com/docs/api/methods#gettaskstate
      *
-     * @param int $taskUid
+     * @param int $id
      *
      * @return array
      */
-    public function getTaskState(int $taskUid): array
+    public function getTaskState(int $id): array
     {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid]);
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id]);
     }
 
     /**
      * Getting configuration task by uid
+     * @url https://a-parser.com/docs/api/methods#gettaskconf
      *
-     * @param int $taskUid
-     *
-     * @return array
-     */
-    public function getTaskConf(int $taskUid): array
-    {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid]);
-    }
-
-    /**
-     * Change status of a task by id
-     *
-     * @param int    $taskUid
-     * @param string $toStatus starting|pausing|stopping|deleting
+     * @param int $id
      *
      * @return array
      */
-    public function changeTaskStatus(int $taskUid, string $toStatus): array
+    public function getTaskConf(int $id): array
     {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid, 'toStatus' => $toStatus]);
-    }
-
-    /**
-     * @param int    $taskUid
-     * @param string $direction start|end|up|down
-     *
-     * @return array
-     */
-    public function moveTask(int $taskUid, string $direction): array
-    {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid, 'direction' => $direction]);
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id]);
     }
 
     /**
      * Getting the link to Task results file by Task Uid
+     * @url https://a-parser.com/docs/api/methods#gettaskresultsfile
      *
-     * @param int $taskUid
+     * @param int $id
      *
-     * @return array
+     * @return string
      */
-    public function getTaskResultsFile(int $taskUid): array
+    public function getTaskResultsFile(int $id): string
     {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid]);
-    }
-
-    /**
-     * Removing results file by Task Uid
-     *
-     * @param $taskUid
-     *
-     * @return mixed
-     */
-    public function deleteTaskResultsFile(int $taskUid)
-    {
-        return $this->makeRequest(__FUNCTION__, ['taskUid' => $taskUid]);
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id]);
     }
 
     /**
      * Getting the list of tasks
+     * @url https://a-parser.com/docs/api/methods#gettaskslist
      *
-     * @param $completed
+     * @param bool $completed
      *
-     * @return mixed
+     * @return array
      */
-    public function getTasksList($completed = 0)
+    public function getTasksList(bool $completed = false): array
     {
-        return $this->makeRequest(__FUNCTION__, ['completed' => $completed]);
+        return $this->makeRequest(__FUNCTION__, ['completed' => (int) $completed]);
     }
 
     /**
      * Displays a list of all available results that can return the specified parser.
+     * @url https://a-parser.com/docs/api/methods#getparserinfo
      *
      * @param string $parser
      *
@@ -306,22 +272,78 @@ class Client
     }
 
     /**
-     * Update executable file of the parser to the latest version, after sending the command.
+     * Getting the number of active accounts (for Yandex).
+     * @url https://a-parser.com/docs/api/methods#getaccountscount
      *
-     * @return mixed
+     * @return array
      */
-    public function update()
+    public function getAccountsCount(): array
     {
         return $this->makeRequest(__FUNCTION__);
     }
 
+    /**
+     * Removing results file by Task Uid
+     * @url https://a-parser.com/docs/api/methods#deletetaskresultsfile
+     *
+     * @param int $id
+     *
+     * @return bool
+     */
+    public function deleteTaskResultsFile(int $id): bool
+    {
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id]);
+    }
 
     /**
-     * Getting the number of active accounts (for Yandex).
+     * Change status of a task by id
+     * @url https://a-parser.com/docs/api/methods#changetaskstatus
      *
-     * @return mixed
+     * @param int $id
+     * @param string $status starting|pausing|stopping|deleting
+     *
+     * @return bool
      */
-    public function getAccountsCount()
+    public function changeTaskStatus(int $id, string $status): bool
+    {
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id, 'toStatus' => $status]);
+    }
+
+    /**
+     * Changing the state of the proxy checker
+     * @url https://a-parser.com/docs/api/methods#changeproxycheckerstate
+     *
+     * @param string $checker
+     * @param bool $state
+     *
+     * @return bool
+     */
+    public function changeProxyCheckerState(string $checker, bool $state): bool
+    {
+        return $this->makeRequest(__FUNCTION__, ['checker' => $checker, 'state' => (int) $state]);
+    }
+
+    /**
+     * Moving a task in the queue by its id
+     * @url https://a-parser.com/docs/api/methods#movetask
+     *
+     * @param int $id
+     * @param string $direction start|end|up|down
+     *
+     * @return bool
+     */
+    public function moveTask(int $id, string $direction): bool
+    {
+        return $this->makeRequest(__FUNCTION__, ['taskUid' => $id, 'direction' => $direction]);
+    }
+
+    /**
+     * Update executable file of the parser to the latest version, after sending the command.
+     * @url https://a-parser.com/docs/api/methods#update
+     *
+     * @return bool
+     */
+    public function update(): bool
     {
         return $this->makeRequest(__FUNCTION__);
     }
@@ -330,7 +352,7 @@ class Client
      * @param string $action
      * @param array  $data
      *
-     * @return array|true
+     * @return array|string|bool
      */
     private function makeRequest(string $action, array $data = [])
     {
@@ -339,7 +361,7 @@ class Client
             'password' => $this->password,
         ];
 
-        if (!empty($data)) {
+        if ($data) {
             $request['data'] = $data;
         }
 
