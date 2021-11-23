@@ -13,7 +13,6 @@ use InvalidArgumentException;
  * @url https://github.com/humanik/aparser-api-php-client
  * @url https://a-parser.com/docs/api/methods
  *
- * @version 1.0.0
  */
 class Client
 {
@@ -53,7 +52,7 @@ class Client
      * @param string $parser
      * @param string $preset
      * @param bool $rawResults
-     * @param array  $options
+     * @param array $options
      *
      * @return array
      */
@@ -186,13 +185,7 @@ class Client
      */
     public function getParserPreset(string $parser, string $preset = 'default'): array
     {
-        return $this->makeRequest(
-            __FUNCTION__,
-            [
-                'parser' => $parser,
-                'preset' => $preset,
-            ]
-        );
+        return $this->makeRequest(__FUNCTION__, [ 'parser' => $parser, 'preset' => $preset ]);
     }
 
     /**
