@@ -61,7 +61,7 @@ class Client
         string $query,
         string $parser,
         string $preset = 'default',
-        int $rawResults = 0,
+        bool $rawResults = false,
         array $options = []
     ): array {
         return $this->makeRequest(
@@ -70,7 +70,7 @@ class Client
                 'query' => $query,
                 'parser' => $parser,
                 'preset' => $preset,
-                'rawResults' => $rawResults,
+                'rawResults' => (int) $rawResults,
                 'options' => $options,
             ]
         );
@@ -84,7 +84,7 @@ class Client
      * @param string $parser
      * @param string $preset
      * @param int    $threads
-     * @param int    $rawResults
+     * @param bool    $rawResults
      * @param array  $options
      *
      * @return array
@@ -94,7 +94,7 @@ class Client
         string $parser,
         string $preset = 'default',
         int $threads = 5,
-        int $rawResults = 0,
+        bool $rawResults = false,
         array $options = []
     ): array {
         return $this->makeRequest(
@@ -104,7 +104,7 @@ class Client
                 'parser' => $parser,
                 'preset' => $preset,
                 'threads' => $threads,
-                'rawResults' => $rawResults,
+                'rawResults' => (int) $rawResults,
                 'options' => $options,
             ]
         );
