@@ -87,7 +87,8 @@ class Task
         $result = [
             'preset' => $this->config['preset'],
             'configPreset' => $this->config['configPreset'],
-            'queriesFrom' => $this->config['queriesFrom']
+            'queriesFrom' => $this->config['queriesFrom'],
+            'resultsFileName' => $this->config['resultsFileName']
         ];
 
         if ('text' === $result['queriesFrom']) {
