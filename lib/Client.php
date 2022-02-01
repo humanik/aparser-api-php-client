@@ -375,12 +375,16 @@ class Client
             throw new Exception(sprintf('Response fail: %s', curl_error($ch)));
         }
 
-        $response = json_decode($response, true);
+        $json = json_decode($response, true);
 
-        if (!$response['success']) {
+        if (null === $json) {
+            throw new Exception(sprintf('Invalid response: %s', $response));
+        }
+
+        if (!$json['success']) {
             throw new Exception(sprintf('Response fail: %s', $response['msg'] ?? 'unknow error'));
         }
 
-        return $response['data'] ?? true;
+        return $json['data'] ?? true;
     }
 }
