@@ -45,11 +45,6 @@ class Parser
 
     public function toArray(): array
     {
-        $result = [$this->name, $this->preset];
-        if ($this->options) {
-            $result[] = $this->options;
-        }
-
-        return $result;
+        return [$this->name, $this->preset, ...$this->options];
     }
 }
