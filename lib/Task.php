@@ -45,6 +45,11 @@ class Task
         $this->config['queryFormat'] = (array) $format;
     }
 
+    public function setResultsFileName(string $filename): void
+    {
+        $this->config['resultsFileName'] = $filename;
+    }
+
     public function addParser(Parser $parser): Parser
     {
         $this->config['parsers'][] = $parser;
