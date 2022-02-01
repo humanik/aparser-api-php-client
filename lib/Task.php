@@ -5,6 +5,7 @@ namespace Humanik\Aparser;
 class Task
 {
     protected array $config;
+    protected bool $simple = false;
 
     public function __construct(array $config = [])
     {
@@ -16,6 +17,11 @@ class Task
         $instance = new self($config);
 
         return $instance;
+    }
+
+    public function setSimpleFormat(bool $value = true): void
+    {
+        $this->simple = $value;
     }
 
     public function getOption(string $name, $default = null)
@@ -35,14 +41,14 @@ class Task
 
     public function setQueries(array $queries): void
     {
-        $this->config['queries'] = $queries;
         $this->config['queriesFrom'] = 'text';
+        $this->config['queries'] = $queries;
     }
 
     public function setQueriesFile($fileName): void
     {
-        $this->config['queriesFile'] = (array) $fileName;
         $this->config['queriesFrom'] = 'file';
+        $this->config['queriesFile'] = (array) $fileName;
     }
 
     public function setQueryFormat($format): void
@@ -64,10 +70,31 @@ class Task
 
     public function toArray(): array
     {
+        if ($this->simple) {
+            return $this->toSimpleArray();
+        }
+
         $result = array_slice($this->config, 0);
         $result['parsers'] = array_map(function ($parser) {
             return $parser instanceof Parser ? $parser->toArray() : $parser;
         }, $result['parsers']);
+
+        return $result;
+    }
+
+    protected function toSimpleArray(): array
+    {
+        $result = [
+            'preset' => $this->config['preset'],
+            'configPreset' => $this->config['configPreset'],
+            'queriesFrom' => $this->config['queriesFrom']
+        ];
+
+        if ('text' === $result['queriesFrom']) {
+            $result['queries'] = $this->config['queries'];
+        } else {
+            $result['queriesFile'] = $this->config['queriesFile'];
+        }
 
         return $result;
     }
