@@ -18,6 +18,11 @@ class Task
         return $instance;
     }
 
+    public function getOption(string $name, $default = null)
+    {
+        return $this->config[$name] ?? $default;
+    }
+
     public function setPreset(string $preset): void
     {
         $this->config['preset'] = $preset;
