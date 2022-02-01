@@ -48,29 +48,22 @@ class Client
      * Single parsing request, any parser and preset can be used
      * @url https://a-parser.com/docs/api/methods#onerequest
      *
+     * @param Parser $parser
      * @param string $query
-     * @param string $parser
-     * @param string $preset
      * @param bool $rawResults
-     * @param array $options
      *
      * @return array
      */
-    public function oneRequest(
-        string $query,
-        string $parser,
-        string $preset = 'default',
-        bool $rawResults = false,
-        array $options = []
-    ): array {
+    public function oneRequest(Parser $parser, string $query, bool $rawResults = false): array
+    {
         return $this->makeRequest(
             __FUNCTION__,
             [
+                'parser' => $parser->getName(),
+                'preset' => $parser->getPreset(),
+                'options' => $parser->getOptions(),
                 'query' => $query,
-                'parser' => $parser,
-                'preset' => $preset,
                 'rawResults' => (int) $rawResults,
-                'options' => $options,
             ]
         );
     }
@@ -79,32 +72,25 @@ class Client
      * Bulk parsing request, any parser and preset can be used
      * @url https://a-parser.com/docs/api/methods#bulkrequest
      *
+     * @param Parser $parser
      * @param array $queries
-     * @param string $parser
      * @param string $preset
      * @param int $threads
      * @param bool $rawResults
-     * @param array $options
      *
      * @return array
      */
-    public function bulkRequest(
-        array $queries,
-        string $parser,
-        string $preset = 'default',
-        int $threads = 5,
-        bool $rawResults = false,
-        array $options = []
-    ): array {
+    public function bulkRequest(Parser $parser, array $queries, int $threads = 5, bool $rawResults = false): array
+    {
         return $this->makeRequest(
             __FUNCTION__,
             [
+                'parser' => $parser->getName(),
+                'preset' => $parser->getPreset(),
+                'options' => $parser->getOptions(),
                 'queries' => $queries,
-                'parser' => $parser,
-                'preset' => $preset,
                 'threads' => $threads,
                 'rawResults' => (int) $rawResults,
-                'options' => $options,
             ]
         );
     }
@@ -123,44 +109,9 @@ class Client
      *
      * @throws InvalidArgumentException
      */
-    public function addTask($configPreset, $taskPreset, $queriesFrom, $queries, $options = []): int
+    public function addTask(Task $task): int
     {
-        $data['configPreset'] = $configPreset ? $configPreset : 'default';
-
-        if ($taskPreset) {
-            $data['preset'] = $taskPreset;
-        } else {
-            $data['resultsFileName'] = $options['resultsFileName'] ?? '$datefile.format().txt';
-            $data['parsers']         = $options['parsers'] ?? [];
-            $data['uniqueQueries']   = $options['uniqueQueries'] ?? 0;
-            $data['keepUnique']      = $options['keepUnique'] ?? 0;
-            $data['resultsPrepend']  = $options['resultsPrepend'] ?? '';
-            $data['moreOptions']     = $options['moreOptions'] ?? '';
-            $data['resultsUnique']   = $options['resultsUnique'] ?? 'no';
-            $data['doLog']           = $options['doLog'] ?? 'no';
-            $data['queryFormat']     = $options['queryFormat'] ?? '$query';
-            $data['resultsSaveTo']   = $options['resultsSaveTo'] ?? 'file';
-            $data['configOverrides'] = $options['configOverrides'] ?? [];
-            $data['resultsFormat']   = $options['resultsFormat'] ?? '';
-            $data['resultsAppend']   = $options['resultsAppend'] ?? '';
-            $data['queryBuilders']   = $options['queryBuilders'] ?? [];
-            $data['resultsBuilders'] = $options['resultsBuilders'] ?? [];
-        }
-
-        switch ($queriesFrom) {
-            case 'file':
-                $data['queriesFrom'] = 'file';
-                $data['queriesFile'] = isset($options['queriesFile']) ? $options['queriesFile'] : false;
-                break;
-            case 'text':
-                $data['queriesFrom'] = 'text';
-                $data['queries'] = $queries ? $queries : [];
-                break;
-            default:
-                throw new InvalidArgumentException('Argument $queriesFrom is incorrect!');
-        }
-
-        return (int) $this->makeRequest(__FUNCTION__, $data);
+        return (int) $this->makeRequest(__FUNCTION__, $task->toArray());
     }
 
     /**
@@ -185,7 +136,7 @@ class Client
      */
     public function getParserPreset(string $parser, string $preset = 'default'): array
     {
-        return $this->makeRequest(__FUNCTION__, [ 'parser' => $parser, 'preset' => $preset ]);
+        return $this->makeRequest(__FUNCTION__, ['parser' => $parser, 'preset' => $preset]);
     }
 
     /**
