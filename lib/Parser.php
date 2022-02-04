@@ -38,6 +38,26 @@ class Parser
         return new self($name, $preset, $options);
     }
 
+    public function addOverride(string $id, $value): void
+    {
+        $this->addRawOption([
+            'id' => $id, 
+            'value' => $value,
+            'type' => 'override', 
+         ]);
+    }
+
+    public function addFilter(string $field, string $pattern, string $type = 'contain', string $option = ''): void
+    {
+        $this->addRawOption([
+            'result' => $field,
+            'filterType' => $type,
+            'value' => $pattern,
+            'type' => 'filter',
+            'option' => $option
+        ]);
+    }
+
     public function addRawOption(array $option)
     {
         $this->options[] = $option;
