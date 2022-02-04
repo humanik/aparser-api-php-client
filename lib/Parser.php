@@ -47,7 +47,7 @@ class Parser
          ]);
     }
 
-    public function addFilter(string $field, string $pattern, string $type = 'contain', string $option = ''): void
+    public function addFilter(string $field, string $pattern, string $type = 'equal', string $option = 'sens'): void
     {
         $this->addRawOption([
             'result' => $field,
