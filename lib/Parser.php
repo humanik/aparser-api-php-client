@@ -38,27 +38,27 @@ class Parser
         return new self($name, $preset, $options);
     }
 
-    public function addOverride(string $id, $value): void
+    public function override(string $id, $value): void
     {
-        $this->addRawOption([
+        $this->addOption([
             'id' => $id, 
             'value' => $value,
             'type' => 'override', 
          ]);
     }
 
-    public function addFilter(string $field, string $type, string $pattern, string $option): void
+    public function filter(string $field, string $operator, string $value, string $option): void
     {
-        $this->addRawOption([
+        $this->addOption([
             'result' => $field,
-            'filterType' => $type,
-            'value' => $pattern,
+            'filterType' => $operator,
+            'value' => $value,
             'type' => 'filter',
             'option' => $option
         ]);
     }
 
-    public function addRawOption(array $option)
+    public function addOption(array $option)
     {
         $this->options[] = $option;
     }
